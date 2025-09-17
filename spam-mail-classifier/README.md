@@ -8,8 +8,7 @@ This project uses a machine learning model to detect spam emails using a CSV dat
 - Data preprocessing (cleaning and tokenization)
 - Feature extraction (CountVectorizer)
 - Model training (Multinomial Naive Bayes)
-- Evaluation (accuracy, precision, recall)
-- Supports further improvements (e.g., deep learning, word embeddings)
+- Evaluation (accuracy, precision, recall, F1score)
 
 ## Technologies Used
 
@@ -21,12 +20,12 @@ This project uses a machine learning model to detect spam emails using a CSV dat
 
 ## Dataset Info
 
-The `spam_data.csv` file contains SMS messages labeled as `spam` or `ham` (not spam). It’s used for training and evaluating the classifier.
+The `spam.csv` file contains SMS messages labeled as `spam` or `ham` (not spam). It’s used for training and evaluating the classifier.
 
 ## How to Run
 
-1. Open the notebook `spam_classifier.ipynb` in Google Colab.
-2. Upload the `spam_data.csv` file when prompted (or mount Google Drive).
+1. Open the notebook `Project_Spam_Mail_Classifier.ipynb` in Google Colab.
+2. Upload the `spam.csv` file.
 3. Run all cells to train and evaluate the model.
 
 ##  Results
