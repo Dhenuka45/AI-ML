@@ -11,7 +11,7 @@ This project uses a machine learning model to detect spam emails using a CSV dat
 - Evaluation (accuracy, precision, recall)
 - Supports further improvements (e.g., deep learning, word embeddings)
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - Python
 - Google Colab
@@ -19,7 +19,7 @@ This project uses a machine learning model to detect spam emails using a CSV dat
 - Scikit-learn
 - Matplotlib / Seaborn (for visualization)
 
-## 📊 Dataset Info
+## Dataset Info
 
 The `spam_data.csv` file contains SMS messages labeled as `spam` or `ham` (not spam). It’s used for training and evaluating the classifier.
 
@@ -32,6 +32,7 @@ The `spam_data.csv` file contains SMS messages labeled as `spam` or `ham` (not s
 ##  Results
  
  Class-wise performance:
+ 
 - Class 1 (Spam):
   - Precision: 96%
   - Recall: 95%
@@ -40,9 +41,10 @@ The `spam_data.csv` file contains SMS messages labeled as `spam` or `ham` (not s
   - Precision: 99%
   - Recall: 99%
   - F1-score: 99%
+
 The model performs very well overall, with high accuracy and balanced precision and recall across both classes.
 
-## Future Improvements
+##  Future Improvements
 
 - Use deep learning models (LSTM, BERT)
 - Add support for email inputs instead of SMS
