@@ -1,27 +1,37 @@
-#Dominant Color Extraction using K-Means Clustering
+# Dominant Color Extraction using K-Means Clustering
 
 This project uses K-Means Clustering to extract the most dominant colors from an image. It’s a simple yet powerful example of how unsupervised machine learning can be applied to image processing and computer vision tasks.
 
 # Features
 
-Upload any image and get the top N dominant colors
-Visualizes the color palette using matplotlib
+Upload any image and get the top K dominant colors.
+
+Visualizes the color palette using matplotlib.
+
 Can be used for color theme generation, design inspiration.
 
 # Technologies Used
 
-Python 
+Python
+
 OpenCV
+
 scikit-learn
+
 NumPy
+
 Matplotlib
 
 # How It Works
 
 The image is loaded and converted from BGR to RGB.
+
 It is reshaped into a 2D array of pixels.
+
 K-Means clustering is applied to group pixels into k clusters.
+
 The cluster centers (centroids) are interpreted as dominant RGB colors.
+
 The result is visualized as 'K' color bars or swatches.
 
 Input Image:
