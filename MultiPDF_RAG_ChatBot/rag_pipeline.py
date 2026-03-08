@@ -1,13 +1,15 @@
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from langchain_cohere import ChatCohere
 from langchain_cohere import CohereEmbeddings
 
 from langchain_community.vectorstores import FAISS
 
-from langchain.memory import ConversationBufferWindowMemory
-from langchain.chains import ConversationalRetrievalChain
+from langchain_classic.memory import ConversationBufferWindowMemory
+from langchain_classic.chains import ConversationalRetrievalChain
+
+from langchain_core.prompts import PromptTemplate
 
 
 class MultiPDFRAG:
@@ -21,7 +23,7 @@ class MultiPDFRAG:
 
         # Cohere chat model
         self.llm = ChatCohere(
-            model="command-r",
+            model="command-a-03-2025",
             temperature=0
         )
 
@@ -62,11 +64,32 @@ class MultiPDFRAG:
         retriever = vectorstore.as_retriever(
             search_kwargs={"k": 4}
         )
+        template = """
+You are an AI assistant answering questions from documents.
+
+Use ONLY the provided context to answer the question.
+
+Rules:
+- Always respond in English
+- If the answer is not in the context, say "I don't know"
+
+Context:
+{context}
+
+Question:
+{question}
+"""
+
+        prompt = PromptTemplate(
+        template=template,
+        input_variables=["context", "question"]
+        )
 
         chain = ConversationalRetrievalChain.from_llm(
             llm=self.llm,
             retriever=retriever,
-            memory=self.memory
+            memory=self.memory,
+            combine_docs_chain_kwargs={"prompt": prompt}
         )
 
         return chain
@@ -79,3 +102,4 @@ class MultiPDFRAG:
         })
 
         return result["answer"]
+
