@@ -73,6 +73,9 @@ Rules:
 - Always respond in English
 - Never switch to another language.
 - If the context is in another language, translate it to English in your answer.
+- If the user asks for key points or a summary, provide the answer by summarizing the whole document and give key points.
+- If the question asks for explanation, give a short explanation followed by key ideas.
+- If the user asks to compare between the uploaded documents, give answers by analyzing the source documents provided.
 - If the answer is not in the context, say "I don't know"
 
 Context:
