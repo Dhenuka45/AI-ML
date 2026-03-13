@@ -71,6 +71,8 @@ Use ONLY the provided context to answer the question.
 
 Rules:
 - Always respond in English
+- Never switch to another language.
+- If the context is in another language, translate it to English in your answer.
 - If the answer is not in the context, say "I don't know"
 
 Context:
@@ -98,7 +100,7 @@ Question:
     def ask(self, question):
 
         result = self.chain.invoke({
-            "question": question
+            "question": f"Answer in English: {question}"
         })
 
         return result["answer"]
