@@ -42,12 +42,18 @@ class MultiPDFRAG:
 
         documents = []
 
-        # Load PDFs
+        # Load PDFs and add metadata
         for pdf in pdf_paths:
-            loader = PyPDFLoader(pdf)
-            documents.extend(loader.load())
 
-        # Split into chunks
+            loader = PyPDFLoader(pdf)
+            pages = loader.load()
+
+            for page in pages:
+                page.metadata["source"] = pdf
+
+            documents.extend(pages)
+
+        # Split documents into chunks
         splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
             chunk_overlap=200
@@ -55,29 +61,26 @@ class MultiPDFRAG:
 
         chunks = splitter.split_documents(documents)
 
-        # Create vector store
+        # Create Vector store
         vectorstore = FAISS.from_documents(
             chunks,
             self.embeddings
         )
 
         retriever = vectorstore.as_retriever(
-            search_kwargs={"k": 4}
+            search_kwargs={"k": 12}
         )
+
+        # Prompt template
         template = """
 You are an AI assistant answering questions from documents.
-
-Use ONLY the provided context to answer the question.
-
-Rules:
-- Always respond in English
+Guidelines:
+- Always answer in English.
+- Use ONLY the provided context.
 - Never switch to another language.
 - If the context is in another language, translate it to English in your answer.
-- If the user asks for key points or a summary, provide the answer by summarizing the whole document/pdf and give key points.
-- If the question asks for explanation, give a short explanation followed by key ideas.
-- If the user asks to compare between the uploaded pdfs, give answers by analyzing the source pdfs provided.
-- If the answer is not in the context, say "I don't know"
-
+- If the question asks for summarization, comparison, similarities, or differences,
+  analyze information from all relevant documents.
 Context:
 {context}
 
@@ -86,15 +89,17 @@ Question:
 """
 
         prompt = PromptTemplate(
-        template=template,
-        input_variables=["context", "question"]
+            template=template,
+            input_variables=["context", "question"]
         )
 
+        # Conversational RAG chain
         chain = ConversationalRetrievalChain.from_llm(
             llm=self.llm,
             retriever=retriever,
             memory=self.memory,
-            combine_docs_chain_kwargs={"prompt": prompt}
+            combine_docs_chain_kwargs={"prompt": prompt},
+            return_source_documents=True
         )
 
         return chain
@@ -103,8 +108,17 @@ Question:
     def ask(self, question):
 
         result = self.chain.invoke({
-            "question": f"Answer in English: {question}"
+            "question": question
         })
 
-        return result["answer"]
+        answer = result["answer"]
 
+        # Get source PDFs
+        sources = list(set(
+            doc.metadata["source"]
+            for doc in result["source_documents"]
+        ))
+
+        source_text = "\n\nSources:\n" + "\n".join(sources)
+
+        return answer + source_text
