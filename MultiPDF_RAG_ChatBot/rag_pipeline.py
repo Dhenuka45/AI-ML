@@ -100,6 +100,7 @@ Question:
             memory=self.memory,
             combine_docs_chain_kwargs={"prompt": prompt},
             return_source_documents=True
+            output_key="answer"
         )
 
         return chain
