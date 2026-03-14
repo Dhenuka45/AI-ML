@@ -75,12 +75,15 @@ class MultiPDFRAG:
         template = """
 You are an AI assistant answering questions from documents.
 Guidelines:
-- Always answer in English.
+- Always answer in English ONLY, don't use spanish.
 - Use ONLY the provided context.
 - Never switch to another language.
 - If the context is in another language, translate it to English in your answer.
 - If the question asks for summarization, comparison, similarities, or differences,
   analyze information from all relevant documents.
+- If the context contains information from multiple documents, analyze them together.
+- When relevant, compare or combine information across documents to answer.
+
 Context:
 {context}
 
