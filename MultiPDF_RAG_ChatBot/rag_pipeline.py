@@ -98,28 +98,15 @@ Question:
             llm=self.llm,
             retriever=retriever,
             memory=self.memory,
-            combine_docs_chain_kwargs={"prompt": prompt},
-            return_source_documents=True
-            output_key="answer"
+            combine_docs_chain_kwargs={"prompt": prompt}
         )
 
         return chain
-
 
     def ask(self, question):
 
         result = self.chain.invoke({
             "question": question
         })
-
-        answer = result["answer"]
-
-        # Get source PDFs
-        sources = list(set(
-            doc.metadata["source"]
-            for doc in result["source_documents"]
-        ))
-
-        source_text = "\n\nSources:\n" + "\n".join(sources)
-
-        return answer + source_text
+    
+        return result["answer"]
